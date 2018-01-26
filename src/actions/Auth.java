@@ -7,6 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dao.DB;
+import models.User;
+import utils.Helper;
+import utils.Jwt;
+
 /**
  * Servlet implementation class Auth
  */
@@ -18,8 +23,24 @@ public class Auth extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println(request.getParameter("u"));
-		System.out.println(request.getParameter("p"));
+		User user = DB.login(request.getParameter("u"), request.getParameter("p"));
+		if(user.isLoggedIn()) {
+			Helper.setAccessControlHeaders(response);
+			response.getWriter().write(Jwt.getToken(user));
+		}else {
+			response.sendError(HttpServletResponse.SC_ACCEPTED);
+		}
 	}
 
+	/* (non-Javadoc)
+	 * @see javax.servlet.http.HttpServlet#doOptions(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
+	 */
+	@Override
+	protected void doOptions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		Helper.setAccessControlHeaders(response);
+		response.setStatus(HttpServletResponse.SC_OK);
+	}
+	
+
+	
 }
