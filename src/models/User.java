@@ -10,5 +10,6 @@ public final class User {
 	private String Password;
 	private String CreateAt;
 	private String UpdatedAt;
+	private String token;
 	private boolean isLoggedIn;
 }

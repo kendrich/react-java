@@ -7,25 +7,20 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
+
 /**
- * Servlet implementation class VerifyCookies
+ * Servlet implementation class ValidateToken
  */
-@WebServlet(asyncSupported = true, urlPatterns = { "/VerifyCookies" })
-public class VerifyCookies extends HttpServlet {
+@WebServlet(asyncSupported = true, urlPatterns = { "/ValidateToken" })
+public class ValidateToken extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-	}
-
-	/**
-	 * @see HttpServlet#doOptions(HttpServletRequest, HttpServletResponse)
-	 */
-	protected void doOptions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		response.getWriter().write(new Gson().toJson(true));
 	}
 
 }

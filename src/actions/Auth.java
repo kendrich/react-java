@@ -1,11 +1,20 @@
 package actions;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import dao.DB;
 import models.User;
@@ -23,24 +32,29 @@ public class Auth extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		User user = DB.login(request.getParameter("u"), request.getParameter("p"));
-		if(user.isLoggedIn()) {
-			Helper.setAccessControlHeaders(response);
-			response.getWriter().write(Jwt.getToken(user));
-		}else {
-			response.sendError(HttpServletResponse.SC_ACCEPTED);
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
+	        String json = "";
+	        if(br != null){
+	            json = br.readLine();
+	        }
+			Map<String, Map<String, String>> map = new Gson().fromJson(json, new TypeToken<Map<String, Map<String, String>>>(){}.getType());
+			String username = map.get("credentials").get("username");
+			String password = map.get("credentials").get("password");
+			
+			User userAction = DB.login(username, password);
+			if(userAction.isLoggedIn()) {
+				User user = new User();
+				user.setID(userAction.getID());
+				user.setToken(Jwt.getToken(userAction));
+				user.setLoggedIn(true);
+				response.getWriter().write(new Gson().toJson(user));
+			}else {
+				response.sendError(400, "Invalid credentials");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			response.sendError(400, "Invalid credentials");
 		}
 	}
-
-	/* (non-Javadoc)
-	 * @see javax.servlet.http.HttpServlet#doOptions(javax.servlet.http.HttpServletRequest, javax.servlet.http.HttpServletResponse)
-	 */
-	@Override
-	protected void doOptions(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		Helper.setAccessControlHeaders(response);
-		response.setStatus(HttpServletResponse.SC_OK);
-	}
-	
-
-	
 }
