@@ -3,8 +3,6 @@ package actions;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -14,11 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
 import dao.DB;
 import models.User;
-import utils.Helper;
 import utils.Jwt;
 
 /**
@@ -31,6 +26,7 @@ public class Auth extends HttpServlet {
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@SuppressWarnings("unchecked")
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(request.getInputStream()));
@@ -38,7 +34,7 @@ public class Auth extends HttpServlet {
 	        if(br != null){
 	            json = br.readLine();
 	        }
-			Map<String, Map<String, String>> map = new Gson().fromJson(json, new TypeToken<Map<String, Map<String, String>>>(){}.getType());
+			Map<String, Map<String, String>> map = new Gson().fromJson(json, Map.class);
 			String username = map.get("credentials").get("username");
 			String password = map.get("credentials").get("password");
 			

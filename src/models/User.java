@@ -12,4 +12,5 @@ public final class User {
 	private String UpdatedAt;
 	private String token;
 	private boolean isLoggedIn;
+	private boolean isSuperuser;
 }

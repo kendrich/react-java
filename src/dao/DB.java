@@ -18,16 +18,17 @@ public class DB {
 		ResultSet rs = null;
 		try {
 			connection = HCP.getDataSource().getConnection();
-			ps = connection.prepareStatement("SELECT * FROM auth_users WHERE username=?");
+			ps = connection.prepareStatement("SELECT * FROM accounts WHERE username=?");
 			ps.setString(1, username);
 			rs = ps.executeQuery();
 			if(rs.next()) {
 				user.setPassword(rs.getString("password"));
 				if(BCrypt.checkpw(password, user.getPassword())) {
-					user.setID(rs.getString("id"));
-					user.setName(rs.getString("name"));
-					user.setCreateAt(rs.getString("created_at"));
-					user.setUpdatedAt(rs.getString("updated_at"));
+					user.setID(rs.getString("account_id"));
+					user.setName(rs.getString("firstname"));
+					user.setCreateAt(rs.getString("date_created"));
+					user.setUpdatedAt(rs.getString("date_updated"));
+					user.setSuperuser(rs.getBoolean("is_superuser"));
 					user.setLoggedIn(true);
 				}
 			}
