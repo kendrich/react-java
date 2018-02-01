@@ -60,4 +60,25 @@ public class Jwt {
 		}
 		return false;
 	}
+	
+	public static User getUser(String token) {
+		User user = new User();
+		try {
+		    Algorithm algorithm = Algorithm.HMAC256(key);
+		    JWTVerifier verifier = JWT.require(algorithm)
+		        .withIssuer("K.L.A.Y")
+		        .build(); //Reusable verifier instance
+		    DecodedJWT jwt = verifier.verify(token);
+		    user.setID(jwt.getHeader());
+		    user.setUsername(jwt.getClaim("u").asString());
+		    user.setCreateAt(jwt.getClaim("cat").asString());
+		    user.setUpdatedAt(jwt.getClaim("uat").asString());
+		    user.setSuperuser(jwt.getClaim("su").asBoolean());
+		} catch (UnsupportedEncodingException exception){
+			System.out.println(exception.getMessage());
+		} catch (JWTVerificationException exception){
+			System.out.println(exception.getMessage());
+		}
+		return user;
+	}
 }
