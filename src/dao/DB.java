@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.mindrot.jbcrypt.BCrypt;
@@ -59,7 +57,7 @@ public class DB {
 					"LEFT JOIN tbl_car b ON a.gps_number=b.gps_number\r\n" + 
 					"WHERE gps_datetime IN (\r\n" + 
 					"	SELECT MAX(a.gps_datetime)\r\n" + 
-					"	FROM tbl_sms_log a WHERE DATE(gps_datetime)=DATE('2018-02-01') GROUP BY gps_number DESC\r\n" + 
+					"	FROM tbl_sms_log a WHERE DATE(gps_datetime)=DATE(NOW()) GROUP BY gps_number DESC\r\n" + 
 					") \r\n" + 
 					"GROUP BY gps_number, lat, lon, address");
 			rs = ps.executeQuery();

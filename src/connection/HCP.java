@@ -10,7 +10,7 @@ public class HCP {
 	private static HikariDataSource dataSource;
 	static{
 		try {
-			DBM db = ConnectionType.set(""); //production
+			DBM db = ConnectionType.set("production"); //production
 			dataSource = new HikariDataSource();
 			dataSource.setDriverClassName(db.getDriver());
 			
