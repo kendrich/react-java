@@ -55,7 +55,7 @@ public class DB {
 		ResultSet rs = null;
 		try {
 			connection = HCP.getDataSource().getConnection();
-			ps = connection.prepareStatement("SELECT a.*, b.car_name, b.car_platenumber, b.color_line, b.driver_fullname FROM tbl_sms_log a\r\n" + 
+			ps = connection.prepareStatement("SELECT a.*, b.car_name, b.car_platenumber FROM tbl_sms_log a\r\n" + 
 					"LEFT JOIN tbl_car b ON a.gps_number=b.gps_number\r\n" + 
 					"WHERE gps_datetime IN (\r\n" + 
 					"	SELECT MAX(a.gps_datetime)\r\n" + 
@@ -66,6 +66,8 @@ public class DB {
 			while(rs.next()) {
 				Location loc = new Location();
 				loc.setGPSNumber(rs.getString("gps_number"));
+				loc.setPlatenumber(rs.getString("car_platenumber"));
+				loc.setCarName(rs.getString("car_name"));
 				loc.setLat(rs.getString("lat"));
 				loc.setLon(rs.getString("lon"));
 				loc.setAddress(rs.getString("address"));
