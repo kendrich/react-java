@@ -1,4 +1,4 @@
-package dao;
+package database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +20,7 @@ public class Admin {
 		ResultSet rs = null;
 		try {
 			connection = HCP.getDataSource().getConnection();
-			ps = connection.prepareStatement("SELECT a.*, b.dept_code, b.description FROM tbl_car a LEFT JOIN tbl_department b ON a.dept_id=b.id");
+			ps = connection.prepareStatement("SELECT a.*, b.name, b.description FROM tbl_car a LEFT JOIN tbl_department b ON a.dept_id=b.id");
 			rs = ps.executeQuery();
 			while(rs.next()) {
 				
@@ -30,13 +30,13 @@ public class Admin {
 				_car.add(rs.getString("car_platenumber"));
 				_car.add(rs.getString("gps_number"));
 				_car.add(rs.getString("active"));
-				_car.add(rs.getString("dept_id"));
+				_car.add(rs.getString("name"));
 				
-				if(cars.containsKey(rs.getString("dept_code"))) {
-					cars.get(rs.getString("dept_code")).add(_car);
+				if(cars.containsKey(rs.getString("name"))) {
+					cars.get(rs.getString("name")).add(_car);
 				}else {
 					List<List<String>> car = new ArrayList<>();
-					cars.put(rs.getString("dept_code"), car);
+					cars.put(rs.getString("name"), car);
 				}
 			}
 		} catch (Exception e) {

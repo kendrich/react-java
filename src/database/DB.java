@@ -1,4 +1,4 @@
-package dao;
+package database;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,8 +10,8 @@ import java.util.Map;
 import org.mindrot.jbcrypt.BCrypt;
 
 import connection.HCP;
-import models.Location;
-import models.User;
+import model.Location;
+import model.User;
 
 public class DB {
 	public static User login(String username, String password) {

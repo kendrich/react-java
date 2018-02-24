@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import dao.DB;
+import database.DB;
 
 /**
  * Servlet implementation class CurrentLocation

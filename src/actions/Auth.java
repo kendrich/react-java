@@ -12,8 +12,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
-import dao.DB;
-import models.User;
+
+import database.DB;
+import model.User;
 import utils.Jwt;
 
 /**

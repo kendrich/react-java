@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
 
-import dao.Admin;
+import database.Admin;
 
 /**
  * Servlet implementation class Cars
